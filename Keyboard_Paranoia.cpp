@@ -18,21 +18,27 @@ void sound_effects(int track_number)
 
 void HideConsole()
 {
-    ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+    //::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+    ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 }
 
+#include <conio.h>
 int main()
 {
     HideConsole();
-    std::cout << "Hello World!\n";
 
     bool flag = false;
-    while (true)
+    double counter = 0;
+    while (1)
     {
+        //_getch();
         if (GetKeyState('A') & 0x8000 && flag == false)
         {
             std::cout << "Alpha" << "\n";
             sound_effects(0);
+            // Allows sound effect to play while pausing program.
+            Sleep(5000);
+            std::cout << "End Sleep" << "\n";
             //flag = true;
         }
         if (GetKeyState('B') & 0x8000 && flag == false)
@@ -40,5 +46,11 @@ int main()
             std::cout << "Beta" << "\n";
             //flag = true;
         }
+        if (GetKeyState('Z') & 0x8000 && flag == false)
+        {
+            std::cout << "ZZZ" << "\n";
+            //flag = true;
+        }
     }
+    return 0;
 }
