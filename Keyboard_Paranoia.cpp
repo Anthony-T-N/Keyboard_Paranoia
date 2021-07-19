@@ -12,12 +12,19 @@ void sound_effects(int track_number)
     {
         play_track = "knocking.wav";
         PlaySound(TEXT("knocking.wav"), NULL, SND_FILENAME | SND_ASYNC);
+        // Allows sound effect to play while pausing program.
         Sleep(5000);
     }
     if (track_number == 1)
     {
         play_track = "presses_8";
         PlaySound(TEXT("presses_8"), NULL, SND_FILENAME | SND_ASYNC);
+        Sleep(500);
+    }
+    if (track_number == 2)
+    {
+        play_track = "mixkit-glitch-crackles-1044";
+        PlaySound(TEXT("mixkit-glitch-crackles-1044"), NULL, SND_FILENAME | SND_ASYNC);
         Sleep(500);
     }
     std::cout << track_number << ") Playing Track: " << play_track << "\n";
@@ -29,31 +36,27 @@ int main()
     //::ShowWindow(::GetConsoleWindow(), SW_HIDE);
     ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 
-    bool flag = false;
     double counter = 0;
     while (1)
     {
-        // TODO: Wait here for next key press.
-        //_getch();
-        if (GetKeyState('A') & 0x8000 && flag == false)
+        std::cout << "[!] Ready" << "\n";
+        // _getch(); waits for user input before continuing.
+        _getch();
+        if (GetKeyState('A') & 0x8000)
         {
             std::cout << "Alpha" << "\n";
             sound_effects(0);
-            // Allows sound effect to play while pausing program.
-            //flag = true;
         }
-        if (GetKeyState('B') & 0x8000 && flag == false)
+        if (GetKeyState('B') & 0x8000)
         {
             std::cout << "Beta" << "\n";
             sound_effects(1);
-            //flag = true;
         }
-        if (GetKeyState('Z') & 0x8000 && flag == false)
+        if (GetKeyState('Z') & 0x8000)
         {
             std::cout << "ZZZ" << "\n";
-            Sleep(5000);
-            std::cout << "End Sleep" << "\n";
-            //flag = true;
+            sound_effects(2);
+            Sleep(2000);
         }
     }
     return 0;
