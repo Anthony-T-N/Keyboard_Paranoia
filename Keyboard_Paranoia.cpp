@@ -2,6 +2,13 @@
 //
 #include <iostream>
 #include <Windows.h>
+#include <vector>
+
+std::vector<char> alphabet = 
+      { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 
+        'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+        'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 
+        'X', 'Y', 'Z' };
 
 #pragma comment(lib, "Winmm.lib")
 //#include <mmsystem.h>
@@ -36,12 +43,21 @@ int main()
     //::ShowWindow(::GetConsoleWindow(), SW_HIDE);
     ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 
+    std::cout << alphabet[rand() % (alphabet.size())] << "\n";
+
     double counter = 0;
     while (1)
     {
+        char char_of_the_day = alphabet[rand() % (alphabet.size())];
+        std::cout << char_of_the_day << "\n";
+        Sleep(500);
         std::cout << "[!] Ready" << "\n";
         // _getch(); waits for user input before continuing.
-        _getch();
+        //_getch();
+        if (GetKeyState(char_of_the_day) & 0x8000)
+        {
+            std::cout << "Char of the day pressed" << "\n";
+        }
         if (GetKeyState('A') & 0x8000)
         {
             std::cout << "Alpha" << "\n";
@@ -58,6 +74,7 @@ int main()
             sound_effects(2);
             Sleep(2000);
         }
+        std::cout << "Hello" << "\n";
     }
     return 0;
 }
