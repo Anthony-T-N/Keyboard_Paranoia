@@ -52,6 +52,7 @@ int main()
         std::cout << char_of_the_day << "\n";
         Sleep(500);
         std::cout << "[!] Ready" << "\n";
+        // TODO: Waiting for user input while out of focus.
         // _getch(); waits for user input before continuing.
         //_getch();
         if (GetKeyState(char_of_the_day) & 0x8000)
@@ -67,6 +68,26 @@ int main()
         {
             std::cout << "Beta" << "\n";
             sound_effects(1);
+        }
+        if (GetKeyState('C') & 0x8000)
+        {
+            std::cout << "Charlie" << "\n";
+            INPUT inputs[2] = {};
+            ZeroMemory(inputs, sizeof(inputs));
+            inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].ki.wVk = VK_CAPITAL;
+
+            inputs[1].type = INPUT_KEYBOARD;
+            inputs[1].ki.wVk = VK_CAPITAL;
+            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+            if (uSent != ARRAYSIZE(inputs))
+            {
+                std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
+            }
+
+            Sleep(1000);
         }
         if (GetKeyState('Z') & 0x8000)
         {
