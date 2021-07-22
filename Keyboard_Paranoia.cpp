@@ -53,8 +53,18 @@ int main()
         Sleep(500);
         std::cout << "[!] Ready" << "\n";
         // TODO: Waiting for user input while out of focus.
+        // https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
         // _getch(); waits for user input before continuing.
         //_getch();
+        std::cout << "Current Key State: " << GetKeyState << "\n";
+        while (!GetKeyState('Q') & 0x8000)
+        {
+            // https://stackoverflow.com/questions/15737495/c-execute-a-while-loop-until-a-key-is-pressed-e-g-esc
+            // https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
+
+            std::string test = "";
+            std::cin >> test;
+        }
         if (GetKeyState(char_of_the_day) & 0x8000)
         {
             std::cout << "Char of the day pressed" << "\n";
@@ -69,6 +79,7 @@ int main()
             std::cout << "Beta" << "\n";
             sound_effects(1);
         }
+        // https://stackoverflow.com/questions/5607849/how-to-simulate-a-key-press-in-c
         if (GetKeyState('C') & 0x8000)
         {
             std::cout << "Charlie" << "\n";
@@ -95,7 +106,6 @@ int main()
             sound_effects(2);
             Sleep(2000);
         }
-        std::cout << "Hello" << "\n";
     }
     return 0;
 }
