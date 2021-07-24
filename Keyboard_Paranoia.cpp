@@ -37,6 +37,48 @@ void sound_effects(int track_number)
     std::cout << track_number << ") Playing Track: " << play_track << "\n";
 }
 
+void key_press(char key_press_char)
+{
+    if (key_press_char == 'C')
+    {
+        std::cout << "[!] Activate Caps Lock" << "\n";
+        INPUT inputs[2] = {};
+        ZeroMemory(inputs, sizeof(inputs));
+        inputs[0].type = INPUT_KEYBOARD;
+        inputs[0].ki.wVk = VK_CAPITAL;
+
+        inputs[1].type = INPUT_KEYBOARD;
+        inputs[1].ki.wVk = VK_CAPITAL;
+        inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+        if (uSent != ARRAYSIZE(inputs))
+        {
+            std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
+        }
+        Sleep(1000);
+    }
+    else if (key_press_char == 'D')
+    {
+        std::cout << "Delta" << "\n";
+        INPUT inputs[2] = {};
+        ZeroMemory(inputs, sizeof(inputs));
+        inputs[0].type = INPUT_KEYBOARD;
+        inputs[0].ki.wVk = 0x46;
+
+        inputs[1].type = INPUT_KEYBOARD;
+        inputs[1].ki.wVk = 0x46;
+        inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+        if (uSent != ARRAYSIZE(inputs))
+        {
+            std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
+        }
+        Sleep(150);
+    }
+}
+
 #include <conio.h>
 int main()
 {
@@ -50,13 +92,11 @@ int main()
     {
         char char_of_the_day = alphabet[rand() % (alphabet.size())];
         std::cout << char_of_the_day << "\n";
-        //Sleep(500);
         std::cout << "[!] Ready" << "\n";
         // TODO: Waiting for user input while out of focus.
         // https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
         // _getch(); waits for user input before continuing.
-        //_getch();
-        std::cout << "Current Key State: " << GetKeyState << "\n";
+        // std::cout << "Current Key State: " << GetKeyState << "\n";
         /*
         while ((GetKeyState('Q') & 0x8000) == false)
         {
@@ -73,60 +113,29 @@ int main()
         {
             std::cout << "Char of the day pressed" << "\n";
         }
-        if (GetKeyState('A') & 0x8000)
+        else if (GetKeyState('A') & 0x8000)
         {
             std::cout << "Alpha" << "\n";
-            sound_effects(0);
+            sound_effects(2);
         }
-        if (GetKeyState('B') & 0x8000)
+        else if (GetKeyState('B') & 0x8000)
         {
             std::cout << "Beta" << "\n";
             sound_effects(1);
         }
         // https://stackoverflow.com/questions/5607849/how-to-simulate-a-key-press-in-c
-        if (GetKeyState('C') & 0x8000)
+        else if (GetKeyState('C') & 0x8000)
         {
-            std::cout << "Charlie" << "\n";
-            INPUT inputs[2] = {};
-            ZeroMemory(inputs, sizeof(inputs));
-            inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_CAPITAL;
-
-            inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = VK_CAPITAL;
-            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
-
-            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-            if (uSent != ARRAYSIZE(inputs))
-            {
-                std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
-            }
-            Sleep(1000);
+            key_press('C');
         }
-        if (GetKeyState('D') & 0x8000)
+        else if (GetKeyState('D') & 0x8000)
         {
-            std::cout << "Delta" << "\n";
-            INPUT inputs[2] = {};
-            ZeroMemory(inputs, sizeof(inputs));
-            inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = 0x46;
-
-            inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = 0x46;
-            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
-
-            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-            if (uSent != ARRAYSIZE(inputs))
-            {
-                std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
-            }
-            Sleep(150);
+            key_press('D');
         }
-        if (GetKeyState('Z') & 0x8000)
+        else if (GetKeyState('Z') & 0x8000)
         {
             std::cout << "ZZZ" << "\n";
-            sound_effects(2);
-            Sleep(2000);
+            sound_effects(0);
         }
     }
     return 0;
