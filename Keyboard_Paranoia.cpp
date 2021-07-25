@@ -1,5 +1,13 @@
 // Keyboard_Paranoia.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
+/* === Minimum Functions ===
+*  [+] Have different states/modes.  
+*  [-] Program progressively changes to different modes/states over a period of time.
+*  [-] Remove fixed keys and randomly assign different keys to different effects.
+*  [-] Wait for user input before proceeding inside the while loop.
+*  
+*   
+*/
 #include <iostream>
 #include <Windows.h>
 #include <vector>
@@ -60,7 +68,7 @@ void key_press(char key_press_char)
     }
     else if (key_press_char == 'D')
     {
-        std::cout << "Delta" << "\n";
+        std::cout << "[!] Press F" << "\n";
         INPUT inputs[2] = {};
         ZeroMemory(inputs, sizeof(inputs));
         inputs[0].type = INPUT_KEYBOARD;
@@ -88,6 +96,10 @@ int main()
     std::cout << alphabet[rand() % (alphabet.size())] << "\n";
 
     double counter = 0;
+    // TODO: Ensure one mode is always true and rest are false.
+    bool mode_initial = true;
+    bool mode_moderate = false;
+    bool mode_aggressive = false;
     while (1)
     {
         char char_of_the_day = alphabet[rand() % (alphabet.size())];
@@ -109,34 +121,45 @@ int main()
             std::cout << "Current Key State: " << GetKeyState << "\n";
         }
         */
-        if (GetKeyState(char_of_the_day) & 0x8000)
+        if (mode_initial == true)
         {
-            std::cout << "Char of the day pressed" << "\n";
+            if (GetKeyState(char_of_the_day) & 0x8000)
+            {
+                std::cout << "Char of the day pressed" << "\n";
+            }
+            else if (GetKeyState('A') & 0x8000)
+            {
+                std::cout << "Alpha" << "\n";
+                sound_effects(2);
+            }
+            // https://stackoverflow.com/questions/5607849/how-to-simulate-a-key-press-in-c
+            else if (GetKeyState('C') & 0x8000)
+            {
+                key_press('C');
+            }
+            else if (GetKeyState('D') & 0x8000)
+            {
+                key_press('D');
+            }
+
         }
-        else if (GetKeyState('A') & 0x8000)
+        else if (mode_moderate == true)
         {
-            std::cout << "Alpha" << "\n";
-            sound_effects(2);
+            if (GetKeyState('B') & 0x8000)
+            {
+                std::cout << "Beta" << "\n";
+                sound_effects(1);
+            }
         }
-        else if (GetKeyState('B') & 0x8000)
+        else if (mode_aggressive == true)
         {
-            std::cout << "Beta" << "\n";
-            sound_effects(1);
+            if (GetKeyState('Z') & 0x8000)
+            {
+                std::cout << "ZZZ" << "\n";
+                sound_effects(0);
+            }
         }
-        // https://stackoverflow.com/questions/5607849/how-to-simulate-a-key-press-in-c
-        else if (GetKeyState('C') & 0x8000)
-        {
-            key_press('C');
-        }
-        else if (GetKeyState('D') & 0x8000)
-        {
-            key_press('D');
-        }
-        else if (GetKeyState('Z') & 0x8000)
-        {
-            std::cout << "ZZZ" << "\n";
-            sound_effects(0);
-        }
+
     }
     return 0;
 }
