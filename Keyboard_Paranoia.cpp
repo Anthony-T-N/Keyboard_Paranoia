@@ -100,14 +100,20 @@ int main()
     bool mode_initial = true;
     bool mode_moderate = false;
     bool mode_aggressive = false;
+    int key_press_cout = 0;
     while (1)
     {
+        // Sleep used to decrease CPU usage in while loop.
+        Sleep(10);
         char char_of_the_day = alphabet[rand() % (alphabet.size())];
         std::cout << char_of_the_day << "\n";
+
+        
+
         std::cout << "[!] Ready" << "\n";
         // TODO: Waiting for user input while out of focus.
         // https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
-        // _getch(); waits for user input before continuing.
+        // _getch(); waits for user input before continuing. Reads from Standard streams.
         // std::cout << "Current Key State: " << GetKeyState << "\n";
         /*
         while ((GetKeyState('Q') & 0x8000) == false)
@@ -121,45 +127,54 @@ int main()
             std::cout << "Current Key State: " << GetKeyState << "\n";
         }
         */
-        if (mode_initial == true)
+        // TODO: If statement to detect any key press here. (Wait condition)
+        for (int key = 8; key <= 190; key++)
         {
-            if (GetKeyState(char_of_the_day) & 0x8000)
+            if (GetAsyncKeyState(key) == -32767)
             {
-                std::cout << "Char of the day pressed" << "\n";
+                key_press_cout++;
+                if (mode_initial == true)
+                {
+                    if (GetKeyState(char_of_the_day) & 0x8000)
+                    {
+                        std::cout << "Char of the day pressed" << "\n";
+                    }
+                    else if (GetKeyState('A') & 0x8000)
+                    {
+                        std::cout << "Alpha" << "\n";
+                        sound_effects(2);
+                    }
+                    // https://stackoverflow.com/questions/5607849/how-to-simulate-a-key-press-in-c
+                    else if (GetKeyState('C') & 0x8000)
+                    {
+                        // Activate Caps Lock
+                        key_press('C');
+                    }
+                    else if (GetKeyState('D') & 0x8000)
+                    {
+                        // Press F
+                        key_press('D');
+                    }
+                }
+                else if (mode_moderate == true)
+                {
+                    if (GetKeyState('B') & 0x8000)
+                    {
+                        std::cout << "Beta" << "\n";
+                        sound_effects(1);
+                    }
+                }
+                else if (mode_aggressive == true)
+                {
+                    if (GetKeyState('Z') & 0x8000)
+                    {
+                        std::cout << "ZZZ" << "\n";
+                        sound_effects(0);
+                    }
+                }
             }
-            else if (GetKeyState('A') & 0x8000)
-            {
-                std::cout << "Alpha" << "\n";
-                sound_effects(2);
-            }
-            // https://stackoverflow.com/questions/5607849/how-to-simulate-a-key-press-in-c
-            else if (GetKeyState('C') & 0x8000)
-            {
-                key_press('C');
-            }
-            else if (GetKeyState('D') & 0x8000)
-            {
-                key_press('D');
-            }
-
         }
-        else if (mode_moderate == true)
-        {
-            if (GetKeyState('B') & 0x8000)
-            {
-                std::cout << "Beta" << "\n";
-                sound_effects(1);
-            }
-        }
-        else if (mode_aggressive == true)
-        {
-            if (GetKeyState('Z') & 0x8000)
-            {
-                std::cout << "ZZZ" << "\n";
-                sound_effects(0);
-            }
-        }
-
     }
+
     return 0;
 }
