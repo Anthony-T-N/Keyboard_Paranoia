@@ -93,29 +93,23 @@ int main()
     //::ShowWindow(::GetConsoleWindow(), SW_HIDE);
     ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 
-    std::cout << alphabet[rand() % (alphabet.size())] << "\n";
-
-    double counter = 0;
+    // std::cout << alphabet[rand() % (alphabet.size())] << "\n";
     // TODO: Ensure one mode is always true and rest are false.
     bool mode_initial = true;
     bool mode_moderate = false;
     bool mode_aggressive = false;
     int key_press_cout = 0;
+    char key = 'x';
     while (1)
     {
-        // Sleep used to decrease CPU usage in while loop.
+        // Sleep used to decrease CPU usage in an infinite while loop.
         Sleep(10);
-        char char_of_the_day = alphabet[rand() % (alphabet.size())];
-        std::cout << char_of_the_day << "\n";
-
-        
-
+        std::cout << key_press_cout << "\n";
         std::cout << "[!] Ready" << "\n";
-        // TODO: Waiting for user input while out of focus.
-        // https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
-        // _getch(); waits for user input before continuing. Reads from Standard streams.
-        // std::cout << "Current Key State: " << GetKeyState << "\n";
         /*
+        https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
+        _getch(); waits for user input before continuing. Reads from Standard streams.
+        std::cout << "Current Key State: " << GetKeyState << "\n";
         while ((GetKeyState('Q') & 0x8000) == false)
         {
             // https://stackoverflow.com/questions/15737495/c-execute-a-while-loop-until-a-key-is-pressed-e-g-esc
@@ -127,12 +121,20 @@ int main()
             std::cout << "Current Key State: " << GetKeyState << "\n";
         }
         */
-        // TODO: If statement to detect any key press here. (Wait condition)
+        // TODO: If statement to detect any key press here. (Wait condition). Waiting for user input while out of focus.
         for (int key = 8; key <= 190; key++)
         {
             if (GetAsyncKeyState(key) == -32767)
             {
+                char char_of_the_day = alphabet[rand() % (alphabet.size())];
+                std::cout << char_of_the_day << "\n";
                 key_press_cout++;
+                if (key_press_cout == 25)
+                {
+                    key_press_cout = 0;
+                    mode_initial = false;
+                    mode_moderate = true;
+                }
                 if (mode_initial == true)
                 {
                     if (GetKeyState(char_of_the_day) & 0x8000)
