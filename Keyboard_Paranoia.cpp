@@ -2,7 +2,7 @@
 
 /* === Minimum Functions ===
 *  [+] Have different states/modes.  
-*  [-] Program progressively changes to different modes/states over a period of time.
+*  [+] Program progressively changes to different modes/states over a period of time.
 *  [-] Remove fixed keys and randomly assign different keys to different effects.
 *  [-] Wait for user input before proceeding inside the while loop.
 *  
@@ -85,6 +85,53 @@ void key_press(char key_press_char)
         }
         Sleep(150);
     }
+    else if (key_press_char == 'E')
+    {
+        std::cout << "[!] Type hello" << "\n";
+        INPUT inputs[10] = {};
+        ZeroMemory(inputs, sizeof(inputs));
+        inputs[0].type = INPUT_KEYBOARD;
+        inputs[0].ki.wVk = 0x48;
+
+        inputs[1].type = INPUT_KEYBOARD;
+        inputs[1].ki.wVk = 0x48;
+        inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        inputs[2].type = INPUT_KEYBOARD;
+        inputs[2].ki.wVk = 0x45;
+
+        inputs[3].type = INPUT_KEYBOARD;
+        inputs[3].ki.wVk = 0x45;
+        inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        inputs[4].type = INPUT_KEYBOARD;
+        inputs[4].ki.wVk = 0x4C;
+
+        inputs[5].type = INPUT_KEYBOARD;
+        inputs[5].ki.wVk = 0x4C;
+        inputs[5].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        inputs[6].type = INPUT_KEYBOARD;
+        inputs[6].ki.wVk = 0x4C;
+
+        inputs[7].type = INPUT_KEYBOARD;
+        inputs[7].ki.wVk = 0x4C;
+        inputs[7].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        inputs[8].type = INPUT_KEYBOARD;
+        inputs[8].ki.wVk = 0x4F;
+
+        inputs[9].type = INPUT_KEYBOARD;
+        inputs[9].ki.wVk = 0x4F;
+        inputs[9].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+        if (uSent != ARRAYSIZE(inputs))
+        {
+            std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
+        }
+        Sleep(150);
+    }
 }
 
 #include <conio.h>
@@ -105,7 +152,6 @@ int main()
         // Sleep used to decrease CPU usage in an infinite while loop.
         Sleep(10);
         std::cout << key_press_cout << "\n";
-        std::cout << "[!] Ready" << "\n";
         /*
         https://stackoverflow.com/questions/18001317/receiving-keypresses-while-in-background
         _getch(); waits for user input before continuing. Reads from Standard streams.
@@ -131,9 +177,13 @@ int main()
                 key_press_cout++;
                 if (key_press_cout == 25)
                 {
-                    key_press_cout = 0;
                     mode_initial = false;
                     mode_moderate = true;
+                }
+                if (key_press_cout == 50)
+                {
+                    mode_moderate = false;
+                    mode_aggressive = true;
                 }
                 if (mode_initial == true)
                 {
@@ -157,6 +207,10 @@ int main()
                         // Press F
                         key_press('D');
                     }
+                    else if (GetKeyState('E') & 0x8000)
+                    {
+                        key_press('E');
+                    }
                 }
                 else if (mode_moderate == true)
                 {
@@ -170,13 +224,11 @@ int main()
                 {
                     if (GetKeyState('Z') & 0x8000)
                     {
-                        std::cout << "ZZZ" << "\n";
                         sound_effects(0);
                     }
                 }
             }
         }
     }
-
     return 0;
 }
