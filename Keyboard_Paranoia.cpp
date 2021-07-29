@@ -90,6 +90,26 @@ void key_press(char key_press_char)
         std::cout << "[!] Type hello" << "\n";
         INPUT inputs[10] = {};
         ZeroMemory(inputs, sizeof(inputs));
+
+        std::vector<int> keys = {0x48, 0x45, 0x4C, 0x4C, 0x4F};
+
+        int j = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            //inputs[i].type = INPUT_KEYBOARD;
+            //inputs[i].ki.wVk = keys[j];
+            std::cout << i << "\n";
+            i++;
+            std::cout << i << "\n";
+            //inputs[i].type = INPUT_KEYBOARD;
+            //inputs[i].ki.wVk = keys[j];
+            //inputs[i].ki.dwFlags = KEYEVENTF_KEYUP;
+            std::cout << "End here" << "\n";
+            j++;
+        }
+
+        Sleep(90000);
+
         inputs[0].type = INPUT_KEYBOARD;
         inputs[0].ki.wVk = 0x48;
 
@@ -130,6 +150,7 @@ void key_press(char key_press_char)
         {
             std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
         }
+
         Sleep(150);
     }
 }
