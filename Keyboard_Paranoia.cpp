@@ -108,7 +108,7 @@ void key_press(char key_press_char)
             j++;
         }
 
-        Sleep(90000);
+        Sleep(10);
 
         inputs[0].type = INPUT_KEYBOARD;
         inputs[0].ki.wVk = 0x48;
@@ -168,6 +168,7 @@ int main()
     bool mode_aggressive = false;
     int key_press_cout = 0;
     char key = 'x';
+    int aggression_mode = 0;
     while (1)
     {
         // Sleep used to decrease CPU usage in an infinite while loop.
@@ -200,13 +201,15 @@ int main()
                 {
                     mode_initial = false;
                     mode_moderate = true;
+                    aggression_mode = 1;
                 }
                 if (key_press_cout == 50)
                 {
                     mode_moderate = false;
                     mode_aggressive = true;
+                    aggression_mode = 2;
                 }
-                if (mode_initial == true)
+                if (mode_initial == true && aggression_mode == 0)
                 {
                     if (GetKeyState(char_of_the_day) & 0x8000)
                     {
@@ -233,7 +236,7 @@ int main()
                         key_press('E');
                     }
                 }
-                else if (mode_moderate == true)
+                else if (mode_moderate == true && aggression_mode == 1)
                 {
                     if (GetKeyState('B') & 0x8000)
                     {
@@ -241,7 +244,7 @@ int main()
                         sound_effects(1);
                     }
                 }
-                else if (mode_aggressive == true)
+                else if (mode_aggressive == true && aggression_mode == 2)
                 {
                     if (GetKeyState('Z') & 0x8000)
                     {
