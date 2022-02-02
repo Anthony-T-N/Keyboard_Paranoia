@@ -20,6 +20,7 @@ std::vector<char> alphabet =
 
 #pragma comment(lib, "Winmm.lib")
 //#include <mmsystem.h>
+
 void sound_effects(int track_number)
 {
     std::string play_track = "";
@@ -150,7 +151,6 @@ void key_press(char key_press_char)
         {
             std::cout << "SendInput failed: 0x%x\n", HRESULT_FROM_WIN32(GetLastError());
         }
-
         Sleep(150);
     }
 }
@@ -158,16 +158,12 @@ void key_press(char key_press_char)
 #include <conio.h>
 int main()
 {
+    // Use to hide console window.
     //::ShowWindow(::GetConsoleWindow(), SW_HIDE);
     ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 
     // std::cout << alphabet[rand() % (alphabet.size())] << "\n";
-    // TODO: Ensure one mode is always true and rest are false.
-    bool mode_initial = true;
-    bool mode_moderate = false;
-    bool mode_aggressive = false;
     int key_press_cout = 0;
-    char key = 'x';
     int aggression_mode = 0;
     while (1)
     {
@@ -199,17 +195,13 @@ int main()
                 key_press_cout++;
                 if (key_press_cout == 25)
                 {
-                    mode_initial = false;
-                    mode_moderate = true;
                     aggression_mode = 1;
                 }
-                if (key_press_cout == 50)
+                else if (key_press_cout == 50)
                 {
-                    mode_moderate = false;
-                    mode_aggressive = true;
                     aggression_mode = 2;
                 }
-                if (mode_initial == true && aggression_mode == 0)
+                if (aggression_mode == 0)
                 {
                     if (GetKeyState(char_of_the_day) & 0x8000)
                     {
@@ -233,10 +225,11 @@ int main()
                     }
                     else if (GetKeyState('E') & 0x8000)
                     {
+                        // Type "Hello"
                         key_press('E');
                     }
                 }
-                else if (mode_moderate == true && aggression_mode == 1)
+                else if (aggression_mode == 1)
                 {
                     if (GetKeyState('B') & 0x8000)
                     {
@@ -244,7 +237,7 @@ int main()
                         sound_effects(1);
                     }
                 }
-                else if (mode_aggressive == true && aggression_mode == 2)
+                else if (aggression_mode == 2)
                 {
                     if (GetKeyState('Z') & 0x8000)
                     {
