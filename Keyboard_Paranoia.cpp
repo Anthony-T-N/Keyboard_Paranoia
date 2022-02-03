@@ -201,6 +201,10 @@ int main()
                 {
                     aggression_mode = 2;
                 }
+                else if (key_press_cout == 75)
+                {
+                    aggression_mode = 3;
+                }
                 if (aggression_mode == 0)
                 {
                     if (GetKeyState(char_of_the_day) & 0x8000)
@@ -243,6 +247,23 @@ int main()
                     {
                         sound_effects(0);
                     }
+                }
+                else if (aggression_mode == 3)
+                {
+                    char if_press; 
+                    for (int i = 0; i < 256; i++) 
+                    {
+                        if_press = GetAsyncKeyState(i);
+                    }
+                    std::cout << if_press << "\n";
+                    // Store key press as variable.
+                    // Perform action based on variable.
+                    /*
+                    if (GetKeyState('Variable here') & 0x8000)
+                    {
+
+                    }
+                    */
                 }
             }
         }
